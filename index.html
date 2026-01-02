@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাংলা ইনভেন্টরি সিস্টেম - আপনার দোকানের ডিজিটাল সমাধান</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .logo h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .logo p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .tab {
+            padding: 20px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            border-right: 1px solid #ddd;
+            transition: all 0.3s;
+            color: #555;
+        }
+        
+        .tab:hover {
+            background: #e0e0e0;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #1a237e;
+            border-bottom: 3px solid #1a237e;
+        }
+        
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #1a237e;
+            outline: none;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #1a237e;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 71, 161, 0.3);
+        }
+        
+        .btn-success {
+            background: #2e7d32;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #c62828;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background: #f57c00;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: #e65100;
+        }
+        
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: #1a237e;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 2px solid #1a237e;
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1a237e;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            color: #666;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .memo-preview {
+            background: white;
+            padding: 20px;
+            border: 2px dashed #1a237e;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1a237e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- Login Screen -->
+        <div id="loginScreen">
+            <div class="login-container">
+                <h2>🔐 বাংলা ইনভেন্টরি সিস্টেম</h2>
+                <div class="form-group">
+                    <label>ইউজারনেম</label>
+                    <input type="text" id="username" placeholder="আপনার ইউজারনেম লিখুন" value="admin">
+                </div>
+                <div class="form-group">
+                    <label>পাসওয়ার্ড</label>
+                    <input type="password" id="password" placeholder="আপনার পাসওয়ার্ড লিখুন" value="1234">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="login()">লগইন করুন</button>
+                <p style="text-align: center; margin-top: 20px; color: #666;">
+                    ডেমো একাউন্ট: admin / 1234
+                </p>
+            </div>
+        </div>
+        
+        <!-- Main App (Initially hidden) -->
+        <div id="mainApp" style="display: none;">
+            <header>
+                <div class="logo">
+                    <h1>🏬 বাংলা ইনভেন্টরি সিস্টেম</h1>
+                    <p>আপনার দোকানের সম্পূর্ণ ডিজিটাল সমাধান</p>
+                </div>
+            </header>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('dashboard')">📊 ড্যাশবোর্ড</div>
+                <div class="tab" onclick="showTab('products')">📦 পণ্য ব্যবস্থাপনা</div>
+                <div class="tab" onclick="showTab('customers')">👥 গ্রাহক ব্যবস্থাপনা</div>
+                <div class="tab" onclick="showTab('orders')">🛒 অর্ডার ব্যবস্থাপনা</div>
+                <div class="tab" onclick="showTab('memo')">🧾 মেমো তৈরি করুন</div>
+                <div class="tab" onclick="showTab('reports')">📈 রিপোর্ট</div>
+            </div>
+            
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <h2>ড্যাশবোর্ড</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">মোট পণ্য</div>
+                        <div class="stat-value" id="totalProducts">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">মোট গ্রাহক</div>
+                        <div class="stat-value" id="totalCustomers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">মোট অর্ডার</div>
+                        <div class="stat-value" id="totalOrders">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">মোট বিক্রয়</div>
+                        <div class="stat-value" id="totalSales">৳ 0</div>
+                    </div>
+                </div>
+                
+                <h3>সাম্প্রতিক অর্ডার</h3>
+                <div id="recentOrders">
+                    <p>কোনো অর্ডার পাওয়া যায়নি</p>
+                </div>
+                
+                <h3>স্টক ফুরিয়ে যাচ্ছে</h3>
+                <div id="lowStockItems">
+                    <p>সব পণ্যের স্টক পর্যাপ্ত</p>
+                </div>
+            </div>
+            
+            <!-- Products Tab -->
+            <div id="products" class="tab-content">
+                <h2>পণ্য ব্যবস্থাপনা</h2>
+                <div class="form-group">
+                    <button class="btn btn-primary" onclick="showProductForm()">➕ নতুন পণ্য যোগ করুন</button>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>পণ্যের নাম</th>
+                            <th>ক্রয়মূল্য</th>
+                            <th>বিক্রয়মূল্য</th>
+                            <th>স্টক</th>
+                            <th>কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable">
+                        <!-- Products will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Customers Tab -->
+            <div id="customers" class="tab-content">
+                <h2>গ্রাহক ব্যবস্থাপনা</h2>
+                <div class="form-group">
+                    <button class="btn btn-primary" onclick="showCustomerForm()">➕ নতুন গ্রাহক যোগ করুন</button>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>নাম</th>
+                            <th>মোবাইল</th>
+                            <th>ঠিকানা</th>
+                            <th>মোট কেনাকাটা</th>
+                            <th>কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customersTable">
+                        <!-- Customers will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Orders Tab -->
+            <div id="orders" class="tab-content">
+                <h2>অর্ডার ব্যবস্থাপনা</h2>
+                <div class="form-group">
+                    <button class="btn btn-primary" onclick="showOrderForm()">➕ নতুন অর্ডার করুন</button>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>অর্ডার নং</th>
+                            <th>গ্রাহক</th>
+                            <th>তারিখ</th>
+                            <th>মোট টাকা</th>
+                            <th>স্ট্যাটাস</th>
+                            <th>কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable">
+                        <!-- Orders will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Memo Tab -->
+            <div id="memo" class="tab-content">
+                <h2>বিক্রয় মেমো তৈরি করুন</h2>
+                
+                <div class="form-group">
+                    <label>গ্রাহক নির্বাচন করুন</label>
+                    <select id="memoCustomer" onchange="loadCustomerDetails()">
+                        <option value="">নতুন গ্রাহক</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>গ্রাহকের নাম</label>
+                    <input type="text" id="customerName" placeholder="গ্রাহকের পুরো নাম">
+                </div>
+                
+                <div class="form-group">
+                    <label>গ্রাহকের মোবাইল</label>
+                    <input type="text" id="customerPhone" placeholder="০১৭১২৩৪৫৬৭৮">
+                </div>
+                
+                <h3>পণ্য যোগ করুন</h3>
+                <div class="form-group">
+                    <select id="productSelect">
+                        <option value="">পণ্য নির্বাচন করুন</option>
+                    </select>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label>পরিমাণ</label>
+                        <input type="number" id="productQty" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>দর (৳)</label>
+                        <input type="number" id="productPrice" placeholder="দর">
+                    </div>
+                    <div class="form-group">
+                        <label style="visibility: hidden;">যোগ করুন</label>
+                        <button class="btn btn-success" onclick="addToMemo()">➕ যোগ করুন</button>
+                    </div>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>পণ্য</th>
+                            <th>পরিমাণ</th>
+                            <th>দর</th>
+                            <th>মোট</th>
+                            <th>কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="memoItems">
+                        <!-- Memo items will be added here -->
+                    </tbody>
+                </table>
+                
+                <div style="text-align: right; margin-top: 20px; font-size: 1.2em;">
+                    <strong>মোট টাকা: ৳ <span id="memoTotal">0</span></strong>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <button class="btn btn-warning" onclick="clearMemo()">❌ মেমো ক্লিয়ার</button>
+                    <button class="btn btn-success" onclick="saveMemo()">💾 মেমো সংরক্ষণ</button>
+                    <button class="btn btn-primary" onclick="printMemo()">🖨️ প্রিন্ট করুন</button>
+                </div>
+                
+                <div class="memo-preview" id="memoPreview">
+                    <!-- Memo preview will be generated here -->
+                </div>
+            </div>
+            
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <h2>বিক্রয় রিপোর্ট</h2>
+                
+                <div class="form-group">
+                    <label>তারিখ থেকে</label>
+                    <input type="date" id="reportFrom">
+                </div>
+                
+                <div class="form-group">
+                    <label>তারিখ পর্যন্ত</label>
+                    <input type="date" id="reportTo">
+                </div>
+                
+                <button class="btn btn-primary" onclick="generateReport()">রিপোর্ট তৈরি করুন</button>
+                
+                <div id="reportResults" style="margin-top: 30px;">
+                    <!-- Report results will be shown here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 500px;">
+            <h3 id="productModalTitle">নতুন পণ্য যোগ করুন</h3>
+            <div class="form-group">
+                <label>পণ্যের নাম</label>
+                <input type="text" id="modalProductName" placeholder="পণ্যের নাম">
+            </div>
+            <div class="form-group">
+                <label>বর্ণনা</label>
+                <textarea id="modalProductDesc" rows="3" placeholder="পণ্যের বর্ণনা"></textarea>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>ক্রয়মূল্য (৳)</label>
+                    <input type="number" id="modalPurchasePrice" placeholder="ক্রয়মূল্য">
+                </div>
+                <div class="form-group">
+                    <label>বিক্রয়মূল্য (৳)</label>
+                    <input type="number" id="modalSalePrice" placeholder="বিক্রয়মূল্য">
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label>বর্তমান স্টক</label>
+                    <input type="number" id="modalCurrentStock" placeholder="বর্তমান স্টক">
+                </div>
+                <div class="form-group">
+                    <label>নূন্যতম স্টক</label>
+                    <input type="number" id="modalMinStock" placeholder="নূন্যতম স্টক" value="10">
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-danger" onclick="hideModal()">বাতিল</button>
+                <button class="btn btn-success" onclick="saveProduct()">সংরক্ষণ করুন</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Customer Modal -->
+    <div id="customerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 500px;">
+            <h3 id="customerModalTitle">নতুন গ্রাহক যোগ করুন</h3>
+            <div class="form-group">
+                <label>গ্রাহকের নাম</label>
+                <input type="text" id="modalCustomerName" placeholder="গ্রাহকের পুরো নাম">
+            </div>
+            <div class="form-group">
+                <label>মোবাইল নম্বর</label>
+                <input type="text" id="modalCustomerPhone" placeholder="০১৭১২৩৪৫৬৭৮">
+            </div>
+            <div class="form-group">
+                <label>ইমেইল (ঐচ্ছিক)</label>
+                <input type="email" id="modalCustomerEmail" placeholder="ইমেইল ঠিকানা">
+            </div>
+            <div class="form-group">
+                <label>ঠিকানা</label>
+                <textarea id="modalCustomerAddress" rows="3" placeholder="গ্রাহকের ঠিকানা"></textarea>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-danger" onclick="hideModal()">বাতিল</button>
+                <button class="btn btn-success" onclick="saveCustomer()">সংরক্ষণ করুন</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Modal -->
+    <div id="orderModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 600px;">
+            <h3>নতুন অর্ডার করুন</h3>
+            <div class="form-group">
+                <label>গ্রাহক নির্বাচন করুন</label>
+                <select id="modalOrderCustomer">
+                    <option value="">গ্রাহক নির্বাচন করুন</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>পণ্য নির্বাচন করুন</label>
+                <select id="modalOrderProduct">
+                    <option value="">পণ্য নির্বাচন করুন</option>
+                </select>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                <div class="form-group">
+                    <label>পরিমাণ</label>
+                    <input type="number" id="modalOrderQty" value="1" min="1">
+                </div>
+                <div class="form-group">
+                    <label>দর (৳)</label>
+                    <input type="number" id="modalOrderPrice" placeholder="দর">
+                </div>
+            </div>
+            
+            <button class="btn btn-success" onclick="addToOrder()">➕ অর্ডারে যোগ করুন</button>
+            
+            <div style="margin-top: 20px; max-height: 200px; overflow-y: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>পণ্য</th>
+                            <th>পরিমাণ</th>
+                            <th>দর</th>
+                            <th>মোট</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderModalItems">
+                        <!-- Order items will be added here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="text-align: right; margin-top: 10px; font-weight: bold;">
+                মোট: ৳ <span id="orderModalTotal">0</span>
+            </div>
+            
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-danger" onclick="hideModal()">বাতিল</button>
+                <button class="btn btn-success" onclick="saveOrder()">অর্ডার সম্পন্ন করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Application State
+        let inventory = {
+            products: [],
+            customers: [],
+            orders: [],
+            currentMemo: [],
+            editingProductId: null,
+            editingCustomerId: null
+        };
+
+        // Load data from localStorage on startup
+        function loadData() {
+            const saved = localStorage.getItem('banglaInventory');
+            if (saved) {
+                inventory = JSON.parse(saved);
+            } else {
+                // Add sample data if no data exists
+                inventory.products = [
+                    { id: 1, name: 'আলু ১ কেজি', description: 'সাদা আলু', purchasePrice: 30, salePrice: 40, currentStock: 100, minStock: 20 },
+                    { id: 2, name: 'পেঁয়াজ ১ কেজি', description: 'লাল পেঁয়াজ', purchasePrice: 40, salePrice: 50, currentStock: 80, minStock: 15 },
+                    { id: 3, name: 'চাল ১ কেজি', description: 'মিনিকেট চাল', purchasePrice: 60, salePrice: 70, currentStock: 50, minStock: 10 },
+                    { id: 4, name: 'ডিম ১ পিস', description: 'ব্রয়লার ডিম', purchasePrice: 12, salePrice: 15, currentStock: 200, minStock: 50 },
+                    { id: 5, name: 'সয়াবিন তেল ১ লিটার', description: 'রিফাইন্ড তেল', purchasePrice: 140, salePrice: 160, currentStock: 30, minStock: 5 }
+                ];
+                
+                inventory.customers = [
+                    { id: 1, name: 'মোঃ রহিম উদ্দিন', phone: '০১৭১২৩৪৫৬৭৮', email: 'rahim@gmail.com', address: 'মিরপুর, ঢাকা', totalSpent: 1250 },
+                    { id: 2, name: 'করিম আহমেদ', phone: '০১৮৯৮৭৬৫৪৩২', email: 'karim@yahoo.com', address: 'উত্তরা, ঢাকা', totalSpent: 850 },
+                    { id: 3, name: 'সালমা বেগম', phone: '০১৯১২১২১৩১৪', email: '', address: 'ধানমন্ডি, ঢাকা', totalSpent: 320 }
+                ];
+                
+                inventory.orders = [
+                    { id: 1, customerId: 1, date: '2024-01-15', items: [
+                        { productId: 1, name: 'আলু ১ কেজি', qty: 10, price: 40, total: 400 },
+                        { productId: 4, name: 'ডিম ১ পিস', qty: 50, price: 15, total: 750 }
+                    ], total: 1150, status: 'সম্পন্ন' },
+                    { id: 2, customerId: 2, date: '2024-01-16', items: [
+                        { productId: 3, name: 'চাল ১ কেজি', qty: 10, price: 70, total: 700 },
+                        { productId: 5, name: 'সয়াবিন তেল ১ লিটার', qty: 1, price: 160, total: 160 }
+                    ], total: 860, status: 'বাকি' }
+                ];
+                
+                saveData();
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('banglaInventory', JSON.stringify(inventory));
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.background = type === 'success' ? '#4caf50' : 
+                                           type === 'error' ? '#f44336' : '#ff9800';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Tab navigation
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Activate clicked tab
+            event.target.classList.add('active');
+            
+            // Update data if needed
+            if (tabName === 'dashboard') {
+                updateDashboard();
+            } else if (tabName === 'products') {
+                loadProductsTable();
+            } else if (tabName === 'customers') {
+                loadCustomersTable();
+            } else if (tabName === 'orders') {
+                loadOrdersTable();
+            } else if (tabName === 'memo') {
+                loadMemoData();
+            }
+        }
+
+        // Login function
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'admin' && password === '1234') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                loadData();
+                updateDashboard();
+                loadProductsTable();
+                showNotification('সফলভাবে লগইন করা হয়েছে!');
+            } else {
+                showNotification('ইউজারনেম বা পাসওয়ার্ড ভুল!', 'error');
+            }
+        }
+
+        // Update dashboard
+        function updateDashboard() {
+            document.getElementById('totalProducts').textContent = inventory.products.length;
+            document.getElementById('totalCustomers').textContent = inventory.customers.length;
+            document.getElementById('totalOrders').textContent = inventory.orders.length;
+            
+            const totalSales = inventory.orders.reduce((sum, order) => sum + order.total, 0);
+            document.getElementById('totalSales').textContent = '৳ ' + totalSales.toFixed(2);
+            
+            // Show recent orders
+            const recentOrders = document.getElementById('recentOrders');
+            const recent = inventory.orders.slice(-5).reverse();
+            
+            if (recent.length > 0) {
+                let html = '<table><thead><tr><th>অর্ডার নং</th><th>গ্রাহক</th><th>তারিখ</th><th>মোট</th></tr></thead><tbody>';
+                recent.forEach(order => {
+                    const customer = inventory.customers.find(c => c.id === order.customerId);
+                    html += `<tr>
+                        <td>${order.id}</td>
+                        <td>${customer ? customer.name : 'অজানা'}</td>
+                        <td>${order.date}</td>
+                        <td>৳ ${order.total.toFixed(2)}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                recentOrders.innerHTML = html;
+            }
+            
+            // Show low stock items
+            const lowStockItems = document.getElementById('lowStockItems');
+            const lowStock = inventory.products.filter(p => p.currentStock <= p.minStock);
+            
+            if (lowStock.length > 0) {
+                let html = '<table><thead><tr><th>পণ্য</th><th>বর্তমান স্টক</th><th>নূন্যতম স্টক</th></tr></thead><tbody>';
+                lowStock.forEach(product => {
+                    html += `<tr>
+                        <td>${product.name}</td>
+                        <td style="color: red; font-weight: bold;">${product.currentStock}</td>
+                        <td>${product.minStock}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                lowStockItems.innerHTML = html;
+            }
+        }
+
+        // Product Management
+        function showProductForm(productId = null) {
+            const modal = document.getElementById('productModal');
+            const title = document.getElementById('productModalTitle');
+            
+            if (productId) {
+                title.textContent = 'পণ্য এডিট করুন';
+                const product = inventory.products.find(p => p.id === productId);
+                if (product) {
+                    document.getElementById('modalProductName').value = product.name;
+                    document.getElementById('modalProductDesc').value = product.description;
+                    document.getElementById('modalPurchasePrice').value = product.purchasePrice;
+                    document.getElementById('modalSalePrice').value = product.salePrice;
+                    document.getElementById('modalCurrentStock').value = product.currentStock;
+                    document.getElementById('modalMinStock').value = product.minStock;
+                    inventory.editingProductId = productId;
+                }
+            } else {
+                title.textContent = 'নতুন পণ্য যোগ করুন';
+                document.getElementById('modalProductName').value = '';
+                document.getElementById('modalProductDesc').value = '';
+                document.getElementById('modalPurchasePrice').value = '';
+                document.getElementById('modalSalePrice').value = '';
+                document.getElementById('modalCurrentStock').value = '';
+                document.getElementById('modalMinStock').value = '10';
+                inventory.editingProductId = null;
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        function saveProduct() {
+            const name = document.getElementById('modalProductName').value;
+            const desc = document.getElementById('modalProductDesc').value;
+            const purchasePrice = parseFloat(document.getElementById('modalPurchasePrice').value);
+            const salePrice = parseFloat(document.getElementById('modalSalePrice').value);
+            const currentStock = parseInt(document.getElementById('modalCurrentStock').value);
+            const minStock = parseInt(document.getElementById('modalMinStock').value);
+            
+            if (!name || isNaN(purchasePrice) || isNaN(salePrice) || isNaN(currentStock)) {
+                showNotification('সব প্রয়োজনীয় তথ্য দিন!', 'error');
+                return;
+            }
+            
+            if (inventory.editingProductId) {
+                // Edit existing product
+                const index = inventory.products.findIndex(p => p.id === inventory.editingProductId);
+                if (index !== -1) {
+                    inventory.products[index] = {
+                        ...inventory.products[index],
+                        name,
+                        description: desc,
+                        purchasePrice,
+                        salePrice,
+                        currentStock,
+                        minStock
+                    };
+                }
+            } else {
+                // Add new product
+                const newId = inventory.products.length > 0 ? 
+                    Math.max(...inventory.products.map(p => p.id)) + 1 : 1;
+                
+                inventory.products.push({
+                    id: newId,
+                    name,
+                    description: desc,
+                    purchasePrice,
+                    salePrice,
+                    currentStock,
+                    minStock
+                });
+            }
+            
+            saveData();
+            loadProductsTable();
+            updateDashboard();
+            hideModal();
+            showNotification('পণ্য সফলভাবে সংরক্ষণ করা হয়েছে!');
+        }
+
+        function loadProductsTable() {
+            const tbody = document.getElementById('productsTable');
+            let html = '';
+            
+            inventory.products.forEach(product => {
+                const stockClass = product.currentStock <= product.minStock ? 'style="color: red; font-weight: bold;"' : '';
+                html += `<tr>
+                    <td>${product.name}</td>
+                    <td>৳ ${product.purchasePrice.toFixed(2)}</td>
+                    <td>৳ ${product.salePrice.toFixed(2)}</td>
+                    <td ${stockClass}>${product.currentStock}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="showProductForm(${product.id})">এডিট</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})">মুছুন</button>
+                    </td>
+                </tr>`;
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        function deleteProduct(id) {
+            if (confirm('আপনি কি নিশ্চিত যে আপনি এই পণ্যটি মুছতে চান?')) {
+                inventory.products = inventory.products.filter(p => p.id !== id);
+                saveData();
+                loadProductsTable();
+                updateDashboard();
+                showNotification('পণ্য মুছে ফেলা হয়েছে!');
+            }
+        }
+
+        // Customer Management
+        function showCustomerForm(customerId = null) {
+            const modal = document.getElementById('customerModal');
+            const title = document.getElementById('customerModalTitle');
+            
+            if (customerId) {
+                title.textContent = 'গ্রাহক এডিট করুন';
+                const customer = inventory.customers.find(c => c.id === customerId);
+                if (customer) {
+                    document.getElementById('modalCustomerName').value = customer.name;
+                    document.getElementById('modalCustomerPhone').value = customer.phone;
+                    document.getElementById('modalCustomerEmail').value = customer.email;
+                    document.getElementById('modalCustomerAddress').value = customer.address;
+                    inventory.editingCustomerId = customerId;
+                }
+            } else {
+                title.textContent = 'নতুন গ্রাহক যোগ করুন';
+                document.getElementById('modalCustomerName').value = '';
+                document.getElementById('modalCustomerPhone').value = '';
+                document.getElementById('modalCustomerEmail').value = '';
+                document.getElementById('modalCustomerAddress').value = '';
+                inventory.editingCustomerId = null;
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        function saveCustomer() {
+            const name = document.getElementById('modalCustomerName').value;
+            const phone = document.getElementById('modalCustomerPhone').value;
+            const email = document.getElementById('modalCustomerEmail').value;
+            const address = document.getElementById('modalCustomerAddress').value;
+            
+            if (!name || !phone) {
+                showNotification('নাম ও মোবাইল নম্বর দিন!', 'error');
+                return;
+            }
+            
+            if (inventory.editingCustomerId) {
+                // Edit existing customer
+                const index = inventory.customers.findIndex(c => c.id === inventory.editingCustomerId);
+                if (index !== -1) {
+                    inventory.customers[index] = {
+                        ...inventory.customers[index],
+                        name,
+                        phone,
+                        email,
+                        address
+                    };
+                }
+            } else {
+                // Add new customer
+                const newId = inventory.customers.length > 0 ? 
+                    Math.max(...inventory.customers.map(c => c.id)) + 1 : 1;
+                
+                inventory.customers.push({
+                    id: newId,
+                    name,
+                    phone,
+                    email,
+                    address,
+                    totalSpent: 0
+                });
+            }
+            
+            saveData();
+            loadCustomersTable();
+            updateDashboard();
+            hideModal();
+            showNotification('গ্রাহক সফলভাবে সংরক্ষণ করা হয়েছে!');
+        }
+
+        function loadCustomersTable() {
+            const tbody = document.getElementById('customersTable');
+            let html = '';
+            
+            inventory.customers.forEach(customer => {
+                html += `<tr>
+                    <td>${customer.name}</td>
+                    <td>${customer.phone}</td>
+                    <td>${customer.address || '-'}</td>
+                    <td>৳ ${customer.totalSpent ? customer.totalSpent.toFixed(2) : '0'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="showCustomerForm(${customer.id})">এডিট</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCustomer(${customer.id})">মুছুন</button>
+                    </td>
+                </tr>`;
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        function deleteCustomer(id) {
+            if (confirm('আপনি কি নিশ্চিত যে আপনি এই গ্রাহক মুছতে চান?')) {
+                inventory.customers = inventory.customers.filter(c => c.id !== id);
+                saveData();
+                loadCustomersTable();
+                updateDashboard();
+                showNotification('গ্রাহক মুছে ফেলা হয়েছে!');
+            }
+        }
+
+        // Order Management
+        function showOrderForm() {
+            const modal = document.getElementById('orderModal');
+            
+            // Load customer dropdown
+            const customerSelect = document.getElementById('modalOrderCustomer');
+            customerSelect.innerHTML = '<option value="">গ্রাহক নির্বাচন করুন</option>';
+            inventory.customers.forEach(customer => {
+                customerSelect.innerHTML += `<option value="${customer.id}">${customer.name} - ${customer.phone}</option>`;
+            });
+            
+            // Load product dropdown
+            const productSelect = document.getElementById('modalOrderProduct');
+            productSelect.innerHTML = '<option value="">পণ্য নির্বাচন করুন</option>';
+            inventory.products.forEach(product => {
+                productSelect.innerHTML += `<option value="${product.id}" data-price="${product.salePrice}">${product.name} - ৳${product.salePrice.toFixed(2)}</option>`;
+            });
+            
+            // Clear order items
+            document.getElementById('orderModalItems').innerHTML = '';
+            document.getElementById('orderModalTotal').textContent = '0';
+            
+            modal.style.display = 'flex';
+        }
+
+        let tempOrderItems = [];
+
+        function addToOrder() {
+            const productId = parseInt(document.getElementById('modalOrderProduct').value);
+            const qty = parseInt(document.getElementById('modalOrderQty').value);
+            const price = parseFloat(document.getElementById('modalOrderPrice').value);
+            
+            if (!productId || !qty || !price) {
+                showNotification('সব তথ্য দিন!', 'error');
+                return;
+            }
+            
+            const product = inventory.products.find(p => p.id === productId);
+            if (!product) {
+                showNotification('পণ্য পাওয়া যায়নি!', 'error');
+                return;
+            }
+            
+            if (product.currentStock < qty) {
+                showNotification('পর্যাপ্ত স্টক নেই!', 'error');
+                return;
+            }
+            
+            const total = qty * price;
+            const item = {
+                productId,
+                name: product.name,
+                qty,
+                price,
+                total
+            };
+            
+            tempOrderItems.push(item);
+            updateOrderModalItems();
+            
+            // Reset form
+            document.getElementById('modalOrderProduct').value = '';
+            document.getElementById('modalOrderQty').value = '1';
+            document.getElementById('modalOrderPrice').value = '';
+        }
+
+        function updateOrderModalItems() {
+            const tbody = document.getElementById('orderModalItems');
+            let html = '';
+            let grandTotal = 0;
+            
+            tempOrderItems.forEach((item, index) => {
+                html += `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.qty}</td>
+                    <td>৳ ${item.price.toFixed(2)}</td>
+                    <td>৳ ${item.total.toFixed(2)}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="removeOrderItem(${index})">❌</button></td>
+                </tr>`;
+                grandTotal += item.total;
+            });
+            
+            tbody.innerHTML = html;
+            document.getElementById('orderModalTotal').textContent = grandTotal.toFixed(2);
+        }
+
+        function removeOrderItem(index) {
+            tempOrderItems.splice(index, 1);
+            updateOrderModalItems();
+        }
+
+        function saveOrder() {
+            const customerId = parseInt(document.getElementById('modalOrderCustomer').value);
+            
+            if (!customerId) {
+                showNotification('গ্রাহক নির্বাচন করুন!', 'error');
+                return;
+            }
+            
+            if (tempOrderItems.length === 0) {
+                showNotification('কমপক্ষে একটি পণ্য যোগ করুন!', 'error');
+                return;
+            }
+            
+            // Create new order
+            const newId = inventory.orders.length > 0 ? 
+                Math.max(...inventory.orders.map(o => o.id)) + 1 : 1;
+            
+            const total = tempOrderItems.reduce((sum, item) => sum + item.total, 0);
+            const order = {
+                id: newId,
+                customerId,
+                date: new Date().toISOString().split('T')[0],
+                items: [...tempOrderItems],
+                total,
+                status: 'বাকি'
+            };
+            
+            // Update product stocks
+            tempOrderItems.forEach(item => {
+                const product = inventory.products.find(p => p.id === item.productId);
+                if (product) {
+                    product.currentStock -= item.qty;
+                }
+            });
+            
+            // Update customer total spent
+            const customer = inventory.customers.find(c => c.id === customerId);
+            if (customer) {
+                customer.totalSpent = (customer.totalSpent || 0) + total;
+            }
+            
+            // Add order to inventory
+            inventory.orders.push(order);
+            
+            saveData();
+            loadOrdersTable();
+            updateDashboard();
+            hideModal();
+            tempOrderItems = [];
+            
+            showNotification('অর্ডার সফলভাবে সংরক্ষণ করা হয়েছে!');
+        }
+
+        function loadOrdersTable() {
+            const tbody = document.getElementById('ordersTable');
+            let html = '';
+            
+            inventory.orders.forEach(order => {
+                const customer = inventory.customers.find(c => c.id === order.customerId);
+                const statusClass = order.status === 'সম্পন্ন' ? 'style="color: green; font-weight: bold;"' : 'style="color: red; font-weight: bold;"';
+                html += `<tr>
+                    <td>${order.id}</td>
+                    <td>${customer ? customer.name : 'অজানা'}</td>
+                    <td>${order.date}</td>
+                    <td>৳ ${order.total.toFixed(2)}</td>
+                    <td ${statusClass}>${order.status}</td>
+                    <td>
+                        <button class="btn btn-sm btn-success" onclick="completeOrder(${order.id})">✓ সম্পন্ন</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteOrder(${order.id})">🗑️ মুছুন</button>
+                    </td>
+                </tr>`;
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        function completeOrder(id) {
+            const order = inventory.orders.find(o => o.id === id);
+            if (order) {
+                order.status = 'সম্পন্ন';
+                saveData();
+                loadOrdersTable();
+                showNotification('অর্ডার সম্পন্ন করা হয়েছে!');
+            }
+        }
+
+        function deleteOrder(id) {
+            if (confirm('আপনি কি নিশ্চিত যে আপনি এই অর্ডার মুছতে চান?')) {
+                inventory.orders = inventory.orders.filter(o => o.id !== id);
+                saveData();
+                loadOrdersTable();
+                updateDashboard();
+                showNotification('অর্ডার মুছে ফেলা হয়েছে!');
+            }
+        }
+
+        // Memo Functions
+        function loadMemoData() {
+            // Load customer dropdown
+            const customerSelect = document.getElementById('memoCustomer');
+            customerSelect.innerHTML = '<option value="">নতুন গ্রাহক</option>';
+            inventory.customers.forEach(customer => {
+                customerSelect.innerHTML += `<option value="${customer.id}">${customer.name} - ${customer.phone}</option>`;
+            });
+            
+            // Load product dropdown
+            const productSelect = document.getElementById('productSelect');
+            productSelect.innerHTML = '<option value="">পণ্য নির্বাচন করুন</option>';
+            inventory.products.forEach(product => {
+                productSelect.innerHTML += `<option value="${product.id}" data-price="${product.salePrice}">${product.name} - ৳${product.salePrice.toFixed(2)}</option>';
+            });
+            
+            // Clear current memo
+            inventory.currentMemo = [];
+            updateMemoDisplay();
+        }
+
+        function loadCustomerDetails() {
+            const customerId = document.getElementById('memoCustomer').value;
+            if (customerId) {
+                const customer = inventory.customers.find(c => c.id === parseInt(customerId));
+                if (customer) {
+                    document.getElementById('customerName').value = customer.name;
+                    document.getElementById('customerPhone').value = customer.phone;
+                }
+            } else {
+                document.getElementById('customerName').value = '';
+                document.getElementById('customerPhone').value = '';
+            }
+        }
+
+        function addToMemo() {
+            const productId = parseInt(document.getElementById('productSelect').value);
+            const qty = parseInt(document.getElementById('productQty').value);
+            let price = parseFloat(document.getElementById('productPrice').value);
+            
+            if (!productId || !qty) {
+                showNotification('পণ্য ও পরিমাণ দিন!', 'error');
+                return;
+            }
+            
+            const product = inventory.products.find(p => p.id === productId);
+            if (!product) {
+                showNotification('পণ্য পাওয়া যায়নি!', 'error');
+                return;
+            }
+            
+            if (!price) {
+                price = product.salePrice;
+            }
+            
+            if (product.currentStock < qty) {
+                showNotification('পর্যাপ্ত স্টক নেই!', 'error');
+                return;
+            }
+            
+            const existingIndex = inventory.currentMemo.findIndex(item => item.productId === productId);
+            
+            if (existingIndex !== -1) {
+                inventory.currentMemo[existingIndex].qty += qty;
+                inventory.currentMemo[existingIndex].total = inventory.currentMemo[existingIndex].qty * price;
+            } else {
+                inventory.currentMemo.push({
+                    productId,
+                    name: product.name,
+                    qty,
+                    price,
+                    total: qty * price
+                });
+            }
+            
+            updateMemoDisplay();
+            
+            // Reset form
+            document.getElementById('productSelect').value = '';
+            document.getElementById('productQty').value = '1';
+            document.getElementById('productPrice').value = '';
+        }
+
+        function updateMemoDisplay() {
+            const tbody = document.getElementById('memoItems');
+            let html = '';
+            let grandTotal = 0;
+            
+            inventory.currentMemo.forEach((item, index) => {
+                html += `<tr>
+                    <td>${item.name}</td>
+                    <td>
+                        <input type="number" value="${item.qty}" min="1" onchange="updateMemoItem(${index}, 'qty', this.value)" style="width: 60px;">
+                    </td>
+                    <td>
+                        <input type="number" value="${item.price.toFixed(2)}" min="0" step="0.01" onchange="updateMemoItem(${index}, 'price', this.value)" style="width: 80px;">
+                    </td>
+                    <td>৳ ${item.total.toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="removeMemoItem(${index})">❌</button>
+                    </td>
+                </tr>`;
+                grandTotal += item.total;
+            });
+            
+            tbody.innerHTML = html;
+            document.getElementById('memoTotal').textContent = grandTotal.toFixed(2);
+            
+            // Update memo preview
+            updateMemoPreview();
+        }
+
+        function updateMemoItem(index, field, value) {
+            if (field === 'qty') {
+                inventory.currentMemo[index].qty = parseInt(value);
+            } else if (field === 'price') {
+                inventory.currentMemo[index].price = parseFloat(value);
+            }
+            
+            inventory.currentMemo[index].total = inventory.currentMemo[index].qty * inventory.currentMemo[index].price;
+            updateMemoDisplay();
+        }
+
+        function removeMemoItem(index) {
+            inventory.currentMemo.splice(index, 1);
+            updateMemoDisplay();
+        }
+
+        function clearMemo() {
+            if (confirm('আপনি কি মেমো ক্লিয়ার করতে চান?')) {
+                inventory.currentMemo = [];
+                updateMemoDisplay();
+            }
+        }
+
+        function saveMemo() {
+            if (inventory.currentMemo.length === 0) {
+                showNotification('মেমোতে পণ্য যোগ করুন!', 'error');
+                return;
+            }
+            
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const total = inventory.currentMemo.reduce((sum, item) => sum + item.total, 0);
+            
+            // Create new customer if needed
+            let customerId = null;
+            if (customerName && customerPhone) {
+                const existingCustomer = inventory.customers.find(c => c.phone === customerPhone);
+                
+                if (!existingCustomer) {
+                    const newId = inventory.customers.length > 0 ? 
+                        Math.max(...inventory.customers.map(c => c.id)) + 1 : 1;
+                    
+                    inventory.customers.push({
+                        id: newId,
+                        name: customerName,
+                        phone: customerPhone,
+                        email: '',
+                        address: '',
+                        totalSpent: total
+                    });
+                    
+                    customerId = newId;
+                } else {
+                    customerId = existingCustomer.id;
+                    existingCustomer.totalSpent = (existingCustomer.totalSpent || 0) + total;
+                }
+            }
+            
+            // Create new order from memo
+            const newId = inventory.orders.length > 0 ? 
+                Math.max(...inventory.orders.map(o => o.id)) + 1 : 1;
+            
+            const order = {
+                id: newId,
+                customerId,
+                date: new Date().toISOString().split('T')[0],
+                items: [...inventory.currentMemo],
+                total,
+                status: 'সম্পন্ন'
+            };
+            
+            // Update product stocks
+            inventory.currentMemo.forEach(item => {
+                const product = inventory.products.find(p => p.id === item.productId);
+                if (product) {
+                    product.currentStock -= item.qty;
+                }
+            });
+            
+            inventory.orders.push(order);
+            saveData();
+            
+            // Print memo
+            printMemo();
+            
+            // Clear memo
+            inventory.currentMemo = [];
+            updateMemoDisplay();
+            
+            showNotification('মেমো সংরক্ষণ ও প্রিন্ট করা হয়েছে!');
+        }
+
+        function updateMemoPreview() {
+            const preview = document.getElementById('memoPreview');
+            const customerName = document.getElementById('customerName').value || 'নতুন গ্রাহক';
+            const customerPhone = document.getElementById('customerPhone').value || '০১৭XXXXXXXX';
+            
+            let itemsHtml = '';
+            let total = 0;
+            
+            inventory.currentMemo.forEach((item, index) => {
+                itemsHtml += `
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #ccc; padding: 5px 0;">
+                        <div>
+                            ${index + 1}. ${item.name}<br>
+                            <small>${item.qty} x ৳${item.price.toFixed(2)}</small>
+                        </div>
+                        <div>৳${item.total.toFixed(2)}</div>
+                    </div>
+                `;
+                total += item.total;
+            });
+            
+            preview.innerHTML = `
+                <div style="text-align: center; margin-bottom: 10px;">
+                    <h3 style="margin: 0;">আমার দোকান</h3>
+                    <p style="margin: 5px 0;">বাজার রোড, ঢাকা<br>ফোন: ০১৭১২৩৪৫৬৭৮</p>
+                    <hr>
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <strong>গ্রাহক:</strong> ${customerName}<br>
+                    <strong>মোবাইল:</strong> ${customerPhone}<br>
+                    <strong>তারিখ:</strong> ${new Date().toLocaleDateString('bn-BD')}
+                </div>
+                
+                <hr>
+                
+                ${itemsHtml}
+                
+                <hr>
+                
+                <div style="text-align: right; font-weight: bold; margin-top: 10px;">
+                    মোট: ৳${total.toFixed(2)}
+                </div>
+                
+                <div style="text-align: center; margin-top: 15px; font-size: 12px;">
+                    ধন্যবাদান্তে<br>
+                    আমার দোকান
+                </div>
+            `;
+        }
+
+        function printMemo() {
+            const printContent = document.getElementById('memoPreview').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = `
+                <div style="width: 58mm; margin: 0 auto; font-family: 'Courier New', monospace; font-size: 12px; padding: 10px;">
+                    ${printContent}
+                </div>
+            `;
+            
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        }
+
+        // Reports
+        function generateReport() {
+            const fromDate = document.getElementById('reportFrom').value;
+            const toDate = document.getElementById('reportTo').value;
+            
+            if (!fromDate || !toDate) {
+                showNotification('দুইটি তারিখ নির্বাচন করুন!', 'error');
+                return;
+            }
+            
+            const filteredOrders = inventory.orders.filter(order => 
+                order.date >= fromDate && order.date <= toDate
+            );
+            
+            const totalSales = filteredOrders.reduce((sum, order) => sum + order.total, 0);
+            const totalItems = filteredOrders.reduce((sum, order) => 
+                sum + order.items.reduce((itemSum, item) => itemSum + item.qty, 0), 0
+            );
+            
+            let itemsHtml = '';
+            let itemMap = {};
+            
+            filteredOrders.forEach(order => {
+                order.items.forEach(item => {
+                    if (!itemMap[item.name]) {
+                        itemMap[item.name] = { qty: 0, total: 0 };
+                    }
+                    itemMap[item.name].qty += item.qty;
+                    itemMap[item.name].total += item.total;
+                });
+            });
+            
+            Object.keys(itemMap).forEach(itemName => {
+                itemsHtml += `
+                    <tr>
+                        <td>${itemName}</td>
+                        <td>${itemMap[itemName].qty}</td>
+                        <td>৳ ${itemMap[itemName].total.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+            
+            const reportResults = document.getElementById('reportResults');
+            reportResults.innerHTML = `
+                <h3>রিপোর্ট: ${fromDate} থেকে ${toDate}</h3>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">মোট বিক্রয়</div>
+                        <div class="stat-value">৳ ${totalSales.toFixed(2)}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">মোট অর্ডার</div>
+                        <div class="stat-value">${filteredOrders.length}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">মোট পণ্য</div>
+                        <div class="stat-value">${totalItems}</div>
+                    </div>
+                </div>
+                
+                <h4>পণ্য অনুযায়ী বিক্রয়</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>পণ্য</th>
+                            <th>পরিমাণ</th>
+                            <th>মোট বিক্রয়</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${itemsHtml}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Utility functions
+        function hideModal() {
+            document.getElementById('productModal').style.display = 'none';
+            document.getElementById('customerModal').style.display = 'none';
+            document.getElementById('orderModal').style.display = 'none';
+            tempOrderItems = [];
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            // Nothing to do here - login screen is shown first
+        };
+    </script>
+</body>
+</html>
